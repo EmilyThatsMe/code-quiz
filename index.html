@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code Quiz</title>
+    <link rel="stylesheet" href="./assets/css/style.css" />
+  </head>
+  <body>
+    <!--high scores link and timer-->
+    <header>
+      <div class="high-scores">
+        <a>View high scores</a>
+      </div>
+      <div class="timer">Time: 75</div>
+    </header>
+    <!--start page-->
+    <section class="start-quiz">
+      <h1>Coding Quiz Challenge</h1>
+      <p>
+        Test your coding knowledge with this timed quiz! Try to answer before
+        the timer runs out.
+        <br />
+        If you answer a question wrong it will deduct 5 seconds off the clock
+        <br />
+        Are you ready?
+      </p>
+      <button class="start-button btn">Start Quiz</button>
+    </section>
+    <!--Questions and answer buttons-->
+    <section class="question-container hide">
+      <h1>Questions</h1>
+      <div class="answer-container">
+        <button class="btn">Answer 1</button>
+        <button class="btn">Answer 2</button>
+        <button class="btn">Answer 3</button>
+        <button class="btn">Answer 4</button>
+      </div>
+    </section>
+    <!--Submit initials for high scores-->
+    <section class="highscores hide">
+      <h1>All done!</h1>
+      <p>Your high score is:</p>
+      <form id="submit-form">
+        <label for="score">Enter your initials:</label>
+        <input type="text" id="initials" placeholder="enter your initials" />
+        <button class="btn">Submit</button>
+      </form>
+    </section>
+    <script src="./assets/js/app.js"></script>
+  </body>
+</html>
