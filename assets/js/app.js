@@ -57,6 +57,7 @@ const questionEl = document.getElementById('question');
 const answerBtnEl = document.getElementById('answer-container');
 const answerResponse = document.getElementById('answer-response');
 const timer = document.getElementById('timer');
+const highScore = document.getElementById('highscores');
 
 let shuffledQuestions, currentQuestionIndex;
 let score = 0;
@@ -79,11 +80,13 @@ function startGame() {
   currentQuestionIndex = 0;
   // show questions
   questionContainer.classList.remove('hide');
+  // start timer
+  // If timer is set above zero then start countdown
   if (holdInterval === 0) {
     holdInterval = setInterval(function () {
       secondsLeft--;
       timer.textContent = 'Time: ' + secondsLeft;
-
+      // if timer is less than zero, end quiz
       if (secondsLeft <= 0) {
         clearInterval(holdInterval);
         endQuiz();
@@ -127,11 +130,24 @@ function resetQuestion() {
 }
 
 // When the user selects an answer
-function selectAnswer() {
-  // check if answer is correct
-  answerBtnEl.addEventListener('click', setNextQuestion);
+function selectAnswer(event) {
+  var element = event.target;
+  if (element.textContent === questions[currentQuestionIndex].correct) {
+    score++;
+    answerResponse.innerText = 'correct';
+    setNextQuestion();
+  } else {
+    secondsLeft = secondsLeft - penalty;
+    answerResponse.innerText = 'wrong';
+    setNextQuestion();
+  }
 }
 
+// end quiz
 function endQuiz() {
   console.log('All done');
+  // hide questions
+  questionContainer.classList.add('hide');
+  // show high score page
+  highScore.classList.remove('hide');
 }
