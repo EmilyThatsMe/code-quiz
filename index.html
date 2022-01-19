@@ -10,8 +10,8 @@
   <body>
     <!--high scores link and timer-->
     <header>
-      <div class="high-scores">
-        <a>View high scores</a>
+      <div class="high-scores" id="view-scores">
+        <a href="#">View high scores</a>
       </div>
       <div class="timer" id="timer">Time: 75</div>
     </header>
@@ -42,12 +42,15 @@
     <!--Submit initials for high scores-->
     <section class="highscores hide" id="highscores">
       <h1>All done!</h1>
-      <p>Your high score is:</p>
       <form id="submit-form">
         <label for="score">Enter your initials:</label>
         <input type="text" id="initials" placeholder="enter your initials" />
-        <button class="btn">Submit</button>
+        <button class="btn" id="submit">Submit</button>
       </form>
+    </section>
+    <!-- View high scores page -->
+    <section class="all-scores hide" id="all-scores">
+      <button id="go-back" class="btn">Go Back</button>
     </section>
     <script src="./assets/js/app.js"></script>
   </body>

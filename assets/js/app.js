@@ -58,14 +58,17 @@ const answerBtnEl = document.getElementById('answer-container');
 const answerResponse = document.getElementById('answer-response');
 const timer = document.getElementById('timer');
 const highScore = document.getElementById('highscores');
+const scoreSubmit = document.getElementById('submit');
+const submitInitials = document.getElementById('initials');
+const scoresPage = document.getElementById('all-scores');
+const goBack = document.getElementById('go-back');
+const viewScores = document.getElementById('view-scores');
 
 let shuffledQuestions, currentQuestionIndex;
 let score = 0;
 let secondsLeft = 76;
 let penalty = 10;
 let holdInterval = 0;
-
-// Set timer
 
 // Start button event listener
 startButton.addEventListener('click', startGame);
@@ -104,6 +107,9 @@ function setNextQuestion() {
   resetQuestion();
   // show current question
   showQuestion(shuffledQuestions[currentQuestionIndex++]);
+  if (currentQuestionIndex >= questions.length) {
+    endQuiz();
+  }
 }
 
 // Populate question and answers in question container
@@ -131,11 +137,14 @@ function resetQuestion() {
 
 // When the user selects an answer
 function selectAnswer(event) {
-  var element = event.target;
-  if (element.textContent === questions[currentQuestionIndex].correct) {
+  const element = event.target;
+  const correct = element.dataset.correct;
+  // if the answer is correct add to score and show "correct"
+  if (correct) {
     score++;
     answerResponse.innerText = 'correct';
     setNextQuestion();
+    // if answer is incorrect deduct 10 seconds from time and show "wrong"
   } else {
     secondsLeft = secondsLeft - penalty;
     answerResponse.innerText = 'wrong';
@@ -150,4 +159,68 @@ function endQuiz() {
   questionContainer.classList.add('hide');
   // show high score page
   highScore.classList.remove('hide');
+  // calculates time remaining and score
+  if (secondsLeft >= 0) {
+    let timeRemaining = secondsLeft;
+    const createP = document.createElement('p');
+    clearInterval(holdInterval);
+    createP.textContent = 'Your final score is: ' + timeRemaining;
+    // appends calculated score to initials page
+    highScore.appendChild(createP);
+  }
 }
+
+// Save scores
+scoreSubmit.addEventListener('click', function () {
+  event.preventDefault();
+  console.log('clicked');
+  highScore.classList.add('hide');
+  scoresPage.classList.remove('hide');
+  // calculate final score
+  const initials = submitInitials.value;
+  let timeRemaining = secondsLeft;
+  const finalScore = {
+    initials: initials,
+    score: timeRemaining,
+  };
+  console.log(finalScore);
+  // save scores to localStorage
+  let allScores = localStorage.getItem('allScores');
+  if (allScores === null) {
+    allScores = [];
+  } else {
+    allScores = JSON.parse(allScores);
+  }
+  allScores.push(finalScore);
+  const savedScore = JSON.stringify(allScores);
+  localStorage.setItem('allScores', savedScore);
+  // render score to page
+  renderScore();
+});
+
+// render score function
+function renderScore() {
+  // get score from localStorage
+  let allScores = localStorage.getItem('allScores');
+  allScores = JSON.parse(allScores);
+  // render all scores to page as a list element
+  for (var i = 0; i < allScores.length; i++) {
+    const createLi = document.createElement('li');
+    createLi.textContent = allScores[i].initials + ' ' + allScores[i].score;
+    scoresPage.appendChild(createLi);
+  }
+}
+
+// got back button returns to start page
+goBack.addEventListener('click', function () {
+  scoresPage.classList.add('hide');
+  startPage.classList.remove('hide');
+});
+
+// view scores button functionality
+viewScores.addEventListener('click', function () {
+  scoresPage.classList.remove('hide');
+  startPage.classList.add('hide');
+  questionContainer.classList.add('hide');
+  highScore.classList.add('hide');
+});
